@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
+import Dashboard from "./pages/Dashboard";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { getLoader } from "./redux/selectors/commonSelector";
+import Toast from "./components/Toast";
 
-function App() {
+const S = {
+  LoaderContainer: styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background-color: #000;
+    opacity: 0.7;
+  `
+};
+
+const App = () => {
+  const isLoading = useSelector(getLoader);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Dashboard />
+      {isLoading && (
+        <S.LoaderContainer>
+          <CircularProgress />
+        </S.LoaderContainer>
+      )}
+      <Toast />
     </div>
   );
-}
+};
 
 export default App;
